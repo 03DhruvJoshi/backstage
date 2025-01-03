@@ -66,7 +66,7 @@ export const MyGroupsSidebarItem = (props: {
           ...(filter ?? {}),
         },
       ],
-      fields: ['metadata', 'kind'],
+      fields: ['metadata', 'kind', 'spec'],
     });
 
     return response.items;
@@ -96,7 +96,11 @@ export const MyGroupsSidebarItem = (props: {
         {groups?.map(function groupsMap(group) {
           return (
             <SidebarSubmenuItem
-              title={group.metadata.title || group.metadata.name}
+              title={
+                (group.spec?.profile as { displayName?: string })
+                  ?.displayName ??
+                (group.metadata.name || group.metadata.title)
+              }
               subtitle={
                 group.metadata.namespace !== DEFAULT_NAMESPACE
                   ? group.metadata.namespace
